@@ -66,6 +66,19 @@
 		callback.call(this, JSON.parse(localStorage[this._dbName]).todos);
 	};
 
+
+	Store.prototype.isDataIdExist = function(value){
+		var todoLists = document.getElementsByClassName("todo-list");
+		for (var i=0;i<todoLists.length;i++){
+			var todoList = todoLists[i];
+			var nodes = todoList.childNodes;
+			for (var j=0;j<nodes.length;j++)
+				console.log("attribute data-id='"+value+"' exist ? ",nodes[j].getAttribute("data-id"));
+				//if(nodes[j].getAttribute("data-id") == value) return true;
+		}
+	  return false;
+	}
+
 	/**
 	 * Will save the given data to the DB. If no item exists it will create a new
 	 * item, otherwise it'll simply update an existing item's properties
@@ -81,12 +94,16 @@
 		callback = callback || function () {};
 
 		// Generate an ID
-	    var newId = ""; 
-	    var charset = "0123456789";
+	    var newId = "";
+			//newId = new Date().getTime();
 
-        for (var i = 0; i < 6; i++) {
-     		newId += charset.charAt(Math.floor(Math.random() * charset.length));
-		}
+		var charset = "0123456789";
+		do {
+		    for (var i = 0; i < 6; i++) 
+		     		newId += charset.charAt(Math.floor(Math.random() * charset.length));
+		} while (this.isDataIdExist(""+newId));
+
+		//
 
 		// If an ID was actually given, find the item and update each property
 		if (id) {
@@ -105,7 +122,7 @@
 
     		// Assign an ID
 			updateData.id = parseInt(newId);
-    
+
 
 			todos.push(updateData);
 			localStorage[this._dbName] = JSON.stringify(data);
@@ -123,7 +140,7 @@
 		var data = JSON.parse(localStorage[this._dbName]);
 		var todos = data.todos;
 		var todoId;
-		
+
 		for (var i = 0; i < todos.length; i++) {
 			if (todos[i].id == id) {
 				todoId = todos[i].id;
