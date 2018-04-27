@@ -100,16 +100,6 @@
 
 		callback = callback || function () {};
 
-		// Generate an ID
-	    var newId = "";
-			//newId = new Date().getTime();
-
-		var charset = "0123456789";
-		do {
-		    for (var i = 0; i < 6; i++)
-		     		newId += charset.charAt(Math.floor(Math.random() * charset.length));
-		} while (this.isDataIdExist(""+newId));
-
 		// If an ID was actually given, find the item and update each property
 		if (id) {
 			for (var i = 0; i < todos.length; i++) {
@@ -124,6 +114,32 @@
 			localStorage[this._dbName] = JSON.stringify(data);
 			callback.call(this, todos);
 		} else {
+
+	    var newId = "";
+			//newId = new Date().getTime();
+
+			// Id generation
+			var charset = "0123456789";
+			var idLength = 6;
+
+			// maximum todo
+			var maxTodos = Math.floor(
+				Math.pow(charset.length,idLength)
+				*((charset.length-1)/charset.length)
+			);
+
+			// When max todos limit is done
+			if(maxTodos <= todos.length) {
+				alert("Le nombre maximum de "+maxTodos+" Todos est atteint. Vous ne pouvez pas en rajouter, à moins de supprimer des todos");
+				return;
+			}
+
+			// Generate an random id
+			do {
+					newId="";
+			    for (var i = 0; i < idLength; i++)
+			     		newId += charset.charAt(Math.floor(Math.random() * charset.length));
+			} while (this.isDataIdExist(""+newId));
 
     		// Assign an ID
 			updateData.id = parseInt(newId);
