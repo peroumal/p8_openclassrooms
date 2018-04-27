@@ -66,16 +66,23 @@
 		callback.call(this, JSON.parse(localStorage[this._dbName]).todos);
 	};
 
-
+	/**
+	* Check if an given data-id value exist in todo-lists
+	* @param {number} value The data-id value to search
+	*/
 	Store.prototype.isDataIdExist = function(value){
 		var todoLists = document.getElementsByClassName("todo-list");
 		for (var i=0;i<todoLists.length;i++){
-			var todoList = todoLists[i];
-			var nodes = todoList.childNodes;
-			for (var j=0;j<nodes.length;j++)
-				console.log("attribute data-id='"+value+"' exist ? ",nodes[j].getAttribute("data-id"));
-				//if(nodes[j].getAttribute("data-id") == value) return true;
+			var todos = todoLists[i].childNodes;
+			for (var j=0;j<todos.length;j++){
+				//console.log("Is attribute data-id="+value+" exist ? ",todos[j].getAttribute("data-id"));
+				if(todos[j].getAttribute("data-id") == value) {
+					console.log("Attribute data-id="+value+" already exist");
+					return true;
+				}
+			}
 		}
+		console.log("Attribute data-id="+value+" is uniq");
 	  return false;
 	}
 
@@ -99,11 +106,9 @@
 
 		var charset = "0123456789";
 		do {
-		    for (var i = 0; i < 6; i++) 
+		    for (var i = 0; i < 6; i++)
 		     		newId += charset.charAt(Math.floor(Math.random() * charset.length));
 		} while (this.isDataIdExist(""+newId));
-
-		//
 
 		// If an ID was actually given, find the item and update each property
 		if (id) {
