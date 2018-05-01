@@ -121,15 +121,18 @@
 	 */
 	Controller.prototype.editItemSave = function (id, title) {
 		var self = this;
-
+		/*	This action is too long for just trim the first spaces of title. It can be simplified
 		while (title[0] === " ") {
 			title = title.slice(1);
 		}
 
 		while (title[title.length-1] === " ") {
 			title = title.slice(0, -1);
-		}
+		}*/
 
+		// For delete first spaces of title
+			title = title.trim();
+			
 		if (title.length !== 0) {
 			self.model.update(id, {title: title}, function () {
 				self.view.render('editItemDone', {id: id, title: title});

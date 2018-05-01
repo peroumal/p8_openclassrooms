@@ -118,6 +118,7 @@
 	    var newId = "";
 			//newId = new Date().getTime();
 
+
 			// Id generation
 			var charset = "0123456789";
 			var idLength = 6;
@@ -130,6 +131,7 @@
 
 			// When max todos limit is done
 			if(maxTodos <= todos.length) {
+				idLength +=1;
 				alert("Le nombre maximum de "+maxTodos+" Todos est atteint. Vous ne pouvez pas en rajouter, à moins de supprimer des todos");
 				return;
 			}
@@ -160,13 +162,14 @@
 	Store.prototype.remove = function (id, callback) {
 		var data = JSON.parse(localStorage[this._dbName]);
 		var todos = data.todos;
-		var todoId;
+		/* We already know the id. This operation is useless
+		var todoId = id;
 
 		for (var i = 0; i < todos.length; i++) {
 			if (todos[i].id == id) {
 				todoId = todos[i].id;
 			}
-		}
+		}*/
 
 		for (var i = 0; i < todos.length; i++) {
 			if (todos[i].id == todoId) {
