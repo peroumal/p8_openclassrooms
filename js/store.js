@@ -149,10 +149,10 @@
 		} else { // If no id not given
 
 			// Todo id generation based on millisecond time
-			//var newId = new Date().getTime();
+			var newId = new Date().getTime();
 
 			// Todo random id generation : code line below
-			var newId = this.generateRandomTodoId(todos,"0123456789",6,true);
+			//var newId = this.generateRandomTodoId(todos,"0123456789",6,true);
 			if(!newId)return;
 
     	// Assign an ID
