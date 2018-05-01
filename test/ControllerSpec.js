@@ -95,8 +95,8 @@ describe('controller', function () {
 			subject.setView('#/active');
 
 			expect(view.render).toHaveBeenCalledWith(
-				'toggleAll',
-				Object({ checked: false })
+				'clearCompletedButton',
+				Object({ completed: 0, visible: false })
 			);
 		});
 
