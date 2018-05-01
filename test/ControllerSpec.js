@@ -202,7 +202,16 @@ describe('controller', function () {
 
 	describe('new todo', function () {
 		it('should add a new todo to the model', function () {
-			// TODO: write test
+			// TODO: write testkk
+			setUpModel([]);
+
+			subject.setView('');
+			var todoname = "my new todo";
+
+			view.trigger('newTodo', todoname);
+			expect(model.create).toHaveBeenCalledWith(todoname,jasmine.any(Function));
+
+
 		});
 
 		it('should add a new todo to the view', function () {
@@ -243,6 +252,14 @@ describe('controller', function () {
 	describe('element removal', function () {
 		it('should remove an entry from the model', function () {
 			// TODO: write test
+			var id=42;
+			var todo = {id: id, title: 'my todo', completed: true};
+			setUpModel([todo]);
+
+			subject.setView('');
+			view.trigger('itemRemove', {id: id});
+
+			expect(model.remove).toHaveBeenCalledWith(id,jasmine.any(Function));
 		});
 
 		it('should remove an entry from the view', function () {
