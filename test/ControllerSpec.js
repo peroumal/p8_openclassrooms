@@ -156,11 +156,17 @@ describe('controller', function () {
 	});
 
 	it('should highlight "All" filter by default', function () {
-		// TODO: write test
+		// TODO: test ok
+		setUpModel([]);
+		subject.setView('#/all');
+		expect(view.render).toHaveBeenCalledWith('setFilter','all');
 	});
 
 	it('should highlight "Active" filter when switching to active view', function () {
-		// TODO: write test
+		// TODO: test ok
+		setUpModel([]);
+		subject.setView('#/active');
+		expect(view.render).toHaveBeenCalledWith('setFilter','active');
 	});
 
 	describe('toggle all', function () {
