@@ -68,7 +68,7 @@
 
 	/**
 	* Check if an given data-id value exist in todo-lists
-	* @param {number} value The data-id value to search
+	* @param {string} value The data-id value to search
 	*/
 	Store.prototype.isDataIdExist = function(value){
 		var todoLists = document.getElementsByClassName("todo-list");
@@ -86,7 +86,15 @@
 	  return false;
 	}
 
-	Store.prototype.generateRandomTodoId = function(charset, idLength, unlimited){
+	/**
+	* Generate random id, not used in given {todos}
+	* @param todos List of todos, called todoList
+	* @param {number} idLength The start length of id
+	* @param {string} charset The charset to use for id generation
+	* @param {boolean} unlimited if is true the generated id length can surpass {idLength}
+	* if necessary for generate an random id. Else if there atno will be returned.
+	*/
+	Store.prototype.generateRandomTodoId = function(todos, charset, idLength, unlimited){
 		// maximum todo
 		var maxTodos = Math.floor(
 			Math.pow(charset.length,idLength)
@@ -103,11 +111,13 @@
 		}
 
 		// Generate an random id
+		var newId;
 		do {
 				newId="";
 				for (var i = 0; i < idLength; i++)
-						newId += charset.charAt(Math.floor(Math.random() * charset.length));
-		} while (this.isDataIdExist(""+newId));
+						newId += charset.charAt(Math.floor(Math.random() * charset.length))+"";
+		} while (this.isDataIdExist(newId));
+		return newId;
 	};
 
 	/**
@@ -136,15 +146,14 @@
 			}
 			localStorage[this._dbName] = JSON.stringify(data);
 			callback.call(this, todos);
-		} else {
-
-	    var newId = "";
+		} else { // If no id not given
 
 			// Todo id generation based on millisecond time
-			newId = new Date().getTime();
+			//var newId = new Date().getTime();
 
-			// Todo random id generation
-			//newId = this.generateRandomTodoId("0123456789",6,true);
+			// Todo random id generation : code line below
+			var newId = this.generateRandomTodoId(todos,"0123456789",6,true);
+			if(!newId)return;
 
     	// Assign an ID
 			updateData.id = parseInt(newId);
