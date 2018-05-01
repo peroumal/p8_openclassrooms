@@ -86,6 +86,30 @@
 	  return false;
 	}
 
+	Store.prototype.generateRandomTodoId = function(charset, idLength, unlimited){
+		// maximum todo
+		var maxTodos = Math.floor(
+			Math.pow(charset.length,idLength)
+			*((charset.length-1)/charset.length)
+		);
+
+		// When max todos limit is done
+		if(maxTodos <= todos.length) {
+			if(!unlimited){
+				alert("Le nombre maximum de "+maxTodos+" todos est atteint. Vous ne pouvez pas en rajouter, à moins de supprimer des todos");
+				return;
+			}
+			idLength +=1;
+		}
+
+		// Generate an random id
+		do {
+				newId="";
+				for (var i = 0; i < idLength; i++)
+						newId += charset.charAt(Math.floor(Math.random() * charset.length));
+		} while (this.isDataIdExist(""+newId));
+	};
+
 	/**
 	 * Will save the given data to the DB. If no item exists it will create a new
 	 * item, otherwise it'll simply update an existing item's properties
@@ -110,43 +134,20 @@
 					break;
 				}
 			}
-
 			localStorage[this._dbName] = JSON.stringify(data);
 			callback.call(this, todos);
 		} else {
 
 	    var newId = "";
-			//newId = new Date().getTime();
 
+			// Todo id generation based on millisecond time
+			newId = new Date().getTime();
 
-			// Id generation
-			var charset = "0123456789";
-			var idLength = 6;
+			// Todo random id generation
+			//newId = this.generateRandomTodoId("0123456789",6,true);
 
-			// maximum todo
-			var maxTodos = Math.floor(
-				Math.pow(charset.length,idLength)
-				*((charset.length-1)/charset.length)
-			);
-
-			// When max todos limit is done
-			if(maxTodos <= todos.length) {
-				idLength +=1;
-				alert("Le nombre maximum de "+maxTodos+" Todos est atteint. Vous ne pouvez pas en rajouter, à moins de supprimer des todos");
-				return;
-			}
-
-			// Generate an random id
-			do {
-					newId="";
-			    for (var i = 0; i < idLength; i++)
-			     		newId += charset.charAt(Math.floor(Math.random() * charset.length));
-			} while (this.isDataIdExist(""+newId));
-
-    		// Assign an ID
+    	// Assign an ID
 			updateData.id = parseInt(newId);
-
-
 			todos.push(updateData);
 			localStorage[this._dbName] = JSON.stringify(data);
 			callback.call(this, [updateData]);
@@ -172,7 +173,7 @@
 		}*/
 
 		for (var i = 0; i < todos.length; i++) {
-			if (todos[i].id == todoId) {
+			if (todos[i].id == id) {
 				todos.splice(i, 1);
 			}
 		}
