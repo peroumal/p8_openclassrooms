@@ -73,7 +73,7 @@ describe('controller', function () {
 			var todo = {title: 'my todo'};
 			setUpModel([todo]);
 
-			subject.setView('');
+			subject.setView('#/all');
 
 			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 		});
@@ -82,7 +82,7 @@ describe('controller', function () {
 			var todo = {title: 'my todo'};
 			setUpModel([todo]);
 
-			subject.setView('#/');
+			subject.setView('#/all');
 
 			expect(view.render).toHaveBeenCalledWith('showEntries', [todo]);
 		});
@@ -170,12 +170,33 @@ describe('controller', function () {
 	});
 
 	describe('toggle all', function () {
+		var todos;
+		beforeEach(function(){
+		todos = [
+				{id:1, title:"todo 1",completed:false},
+				{id:2, title:"todo 2",completed:true},
+				{id:3, title:"todo 3",completed:false},
+			];
+		setUpModel(todos);
+		subject.setView("all");
+		view.trigger("toggleAll",Object({completed:true}));
+		});
 		it('should toggle all todos to completed', function () {
-			// TODO: write test
+			// TODO: test ok
+			todos.forEach(function(todo){
+				expect(model.update).toHaveBeenCalledWith(todo.id,
+					Object({completed:true})
+					,jasmine.any(Function));
+			});
 		});
 
 		it('should update the view', function () {
-			// TODO: write test
+			// TODO: test ok
+			todos.forEach(function(todo){
+				expect(view.render).toHaveBeenCalledWith(
+					"elementComplete",
+					Object({id:todo.id, completed:true}));
+			});
 		});
 	});
 
